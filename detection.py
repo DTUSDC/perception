@@ -344,63 +344,6 @@ while cap.isOpened():
 
             cv2.polylines(img1, np.int32([left_lane]), isClosed=False, color=(255,0,0),thickness=3)
             cv2.polylines(img1, np.int32([right_lane]), isClosed=False, color=(0,0,255),thickness=3)
-            '''left_coeff = np.polyfit(final1_x,final1_y,5)
-            right_coeff = np.polyfit(final2_x,final2_y,5)
-
-            left_coeff_inv = np.polyfit(final1_y,final1_x,5)
-            right_coeff_inv = np.polyfit(final2_y,final2_x,5)
-
-            left_coeff = np.polyfit(final1_x,final1_y,2)
-            right_coeff = np.polyfit(final2_x,final2_y,2)
-
-            left_coeff_inv = np.polyfit(final1_y,final1_x,2)
-            right_coeff_inv = np.polyfit(final2_y,final2_x,2)
-
-            left_coeff = np.polyfit(final1_x,final1_y,3)
-            right_coeff = np.polyfit(final2_x,final2_y,3)
-
-            left_coeff_inv = np.polyfit(final1_y,final1_x,3)
-            right_coeff_inv = np.polyfit(final2_y,final2_x,3)
-
-            left_start_x = int(pos((start_y**5) * left_coeff_inv[0]  + (start_y**4)*left_coeff_inv[1] + (start_y**3) * left_coeff_inv[2]  + (start_y**2)*left_coeff_inv[3]+ start_y*left_coeff_inv[4] + left_coeff_inv[5]))
-            left_end_x = int(pos((end_y**5) * left_coeff_inv[0]  + (end_y**4)*left_coeff_inv[1] + (end_y**3) * left_coeff_inv[2]  + (end_y**2)*left_coeff_inv[3]+ end_y*left_coeff_inv[4] + left_coeff_inv[5]))
-            right_end_x = int(pos((start_y**5) * right_coeff_inv[0]  + (start_y**4)*right_coeff_inv[1] + (start_y**3) * right_coeff_inv[2]  + (start_y**2)*right_coeff_inv[3]+ start_y*right_coeff_inv[4] + right_coeff_inv[5]))
-            right_start_x = int(pos((end_y**5) * right_coeff_inv[0]  + (end_y**4)*right_coeff_inv[1] + (end_y**3) * right_coeff_inv[2]  + (end_y**2)*right_coeff_inv[3]+ end_y*right_coeff_inv[4] + right_coeff_inv[5]))
-
-            left_x = np.linspace(left_start_x,left_end_x,50,endpoint=True,dtype=np.int32)
-            right_x = np.linspace(right_start_x,right_end_x,50,endpoint=True,dtype=np.int32)
-
-            left_y = [(i**5) * left_coeff[0] + (i**4)*left_coeff[1] + (i**3) * left_coeff[2] + (i**2)*left_coeff[3] + i*left_coeff[4] + left_coeff[5] for i in left_x]
-            right_y = [(i**5) * right_coeff[0] + (i**4)*right_coeff[1] + (i**3) * right_coeff[2] + (i**2)*right_coeff[3] + i*right_coeff[4] + right_coeff[5] for i in right_x]
-
-            left_start_x = int(pos((start_y**2) * left_coeff_inv[0]  + start_y*left_coeff_inv[1] + left_coeff_inv[2]))
-            left_end_x = int(pos((end_y**2) * left_coeff_inv[0]  + end_y*left_coeff_inv[1] + left_coeff_inv[2]))
-            right_end_x = int(pos((start_y**2) * right_coeff_inv[0]  + start_y*right_coeff_inv[1] + right_coeff_inv[2]))
-            right_start_x = int(pos((end_y**2) * right_coeff_inv[0]  + end_y*right_coeff_inv[1] + right_coeff_inv[2]))
-
-            left_x = np.linspace(left_start_x,left_end_x,50,endpoint=True,dtype=np.int32)
-            right_x = np.linspace(right_start_x,right_end_x,50,endpoint=True,dtype=np.int32)
-
-            left_y = [(i**2) * left_coeff[0] + i*left_coeff[1] + left_coeff[2] for i in left_x]
-            right_y = [(i**2) * right_coeff[0] + i*right_coeff[1] + right_coeff[2] for i in right_x]
-
-            left_start_x = int(pos((start_y**3) * left_coeff_inv[0]  + (start_y**2)*left_coeff_inv[1] + start_y*left_coeff_inv[2]+left_coeff_inv[3]))
-            left_end_x = int(pos((end_y**3) * left_coeff_inv[0]  + (end_y**2)*left_coeff_inv[1] + end_y*left_coeff_inv[2]+left_coeff_inv[3]))
-            right_end_x = int(pos((start_y**3) * right_coeff_inv[0]  + (start_y**2)*right_coeff_inv[1] + start_y*right_coeff_inv[2]+right_coeff_inv[3]))
-            right_start_x = int(pos((end_y**3) * right_coeff_inv[0]  + (end_y**2)*right_coeff_inv[1] + end_y*right_coeff_inv[2]+right_coeff_inv[3]))
-
-            left_x = np.linspace(left_start_x,left_end_x,50,endpoint=True,dtype=np.int32)
-            right_x = np.linspace(right_start_x,right_end_x,50,endpoint=True,dtype=np.int32)
-
-            left_y = [(i**3) * left_coeff[0] + (i**2)*left_coeff[1] + i*left_coeff[2] + left_coeff[3] for i in left_x]
-            right_y = [(i**3) * right_coeff[0] + (i**2)*right_coeff[1] + i*right_coeff[2] + right_coeff[3] for i in right_x]
-
-            left_lane = [[i,j] for i,j in zip(left_x,left_y)]
-            right_lane = [[i,j] for i,j in zip(right_x,right_y)]
-
-            frame = cv2.resize(image,(256,256))
-            cv2.polylines(img1, np.int32([left_lane]), isClosed=False, color=(0,0,255),thickness=3)
-            cv2.polylines(img1, np.int32([right_lane]), isClosed=False, color=(0,0,255),thickness=3)'''
             cv2.imshow('image',img1)
             if save:
                 out.write(img1)
@@ -486,63 +429,6 @@ while cap.isOpened():
 
             cv2.polylines(img1, np.int32([left_lane]), isClosed=False, color=(255,0,0),thickness=3)
             cv2.polylines(img1, np.int32([right_lane]), isClosed=False, color=(0,0,255),thickness=3)
-            '''left_coeff = np.polyfit(final1_x,final1_y,5)
-            right_coeff = np.polyfit(final2_x,final2_y,5)
-
-            left_coeff_inv = np.polyfit(final1_y,final1_x,5)
-            right_coeff_inv = np.polyfit(final2_y,final2_x,5)
-
-            left_coeff = np.polyfit(final1_x,final1_y,2)
-            right_coeff = np.polyfit(final2_x,final2_y,2)
-
-            left_coeff_inv = np.polyfit(final1_y,final1_x,2)
-            right_coeff_inv = np.polyfit(final2_y,final2_x,2)
-
-            left_coeff = np.polyfit(final1_x,final1_y,3)
-            right_coeff = np.polyfit(final2_x,final2_y,3)
-
-            left_coeff_inv = np.polyfit(final1_y,final1_x,3)
-            right_coeff_inv = np.polyfit(final2_y,final2_x,3)
-
-            left_start_x = int(pos((start_y**5) * left_coeff_inv[0]  + (start_y**4)*left_coeff_inv[1] + (start_y**3) * left_coeff_inv[2]  + (start_y**2)*left_coeff_inv[3]+ start_y*left_coeff_inv[4] + left_coeff_inv[5]))
-            left_end_x = int(pos((end_y**5) * left_coeff_inv[0]  + (end_y**4)*left_coeff_inv[1] + (end_y**3) * left_coeff_inv[2]  + (end_y**2)*left_coeff_inv[3]+ end_y*left_coeff_inv[4] + left_coeff_inv[5]))
-            right_end_x = int(pos((start_y**5) * right_coeff_inv[0]  + (start_y**4)*right_coeff_inv[1] + (start_y**3) * right_coeff_inv[2]  + (start_y**2)*right_coeff_inv[3]+ start_y*right_coeff_inv[4] + right_coeff_inv[5]))
-            right_start_x = int(pos((end_y**5) * right_coeff_inv[0]  + (end_y**4)*right_coeff_inv[1] + (end_y**3) * right_coeff_inv[2]  + (end_y**2)*right_coeff_inv[3]+ end_y*right_coeff_inv[4] + right_coeff_inv[5]))
-
-            left_x = np.linspace(left_start_x,left_end_x,50,endpoint=True,dtype=np.int32)
-            right_x = np.linspace(right_start_x,right_end_x,50,endpoint=True,dtype=np.int32)
-
-            left_y = [(i**5) * left_coeff[0] + (i**4)*left_coeff[1] + (i**3) * left_coeff[2] + (i**2)*left_coeff[3] + i*left_coeff[4] + left_coeff[5] for i in left_x]
-            right_y = [(i**5) * right_coeff[0] + (i**4)*right_coeff[1] + (i**3) * right_coeff[2] + (i**2)*right_coeff[3] + i*right_coeff[4] + right_coeff[5] for i in right_x]
-
-            left_start_x = int(pos((start_y**2) * left_coeff_inv[0]  + start_y*left_coeff_inv[1] + left_coeff_inv[2]))
-            left_end_x = int(pos((end_y**2) * left_coeff_inv[0]  + end_y*left_coeff_inv[1] + left_coeff_inv[2]))
-            right_end_x = int(pos((start_y**2) * right_coeff_inv[0]  + start_y*right_coeff_inv[1] + right_coeff_inv[2]))
-            right_start_x = int(pos((end_y**2) * right_coeff_inv[0]  + end_y*right_coeff_inv[1] + right_coeff_inv[2]))
-
-            left_x = np.linspace(left_start_x,left_end_x,50,endpoint=True,dtype=np.int32)
-            right_x = np.linspace(right_start_x,right_end_x,50,endpoint=True,dtype=np.int32)
-
-            left_y = [(i**2) * left_coeff[0] + i*left_coeff[1] + left_coeff[2] for i in left_x]
-            right_y = [(i**2) * right_coeff[0] + i*right_coeff[1] + right_coeff[2] for i in right_x]
-
-            left_start_x = int(pos((start_y**3) * left_coeff_inv[0]  + (start_y**2)*left_coeff_inv[1] + start_y*left_coeff_inv[2]+left_coeff_inv[3]))
-            left_end_x = int(pos((end_y**3) * left_coeff_inv[0]  + (end_y**2)*left_coeff_inv[1] + end_y*left_coeff_inv[2]+left_coeff_inv[3]))
-            right_end_x = int(pos((start_y**3) * right_coeff_inv[0]  + (start_y**2)*right_coeff_inv[1] + start_y*right_coeff_inv[2]+right_coeff_inv[3]))
-            right_start_x = int(pos((end_y**3) * right_coeff_inv[0]  + (end_y**2)*right_coeff_inv[1] + end_y*right_coeff_inv[2]+right_coeff_inv[3]))
-
-            left_x = np.linspace(left_start_x,left_end_x,50,endpoint=True,dtype=np.int32)
-            right_x = np.linspace(right_start_x,right_end_x,50,endpoint=True,dtype=np.int32)
-
-            left_y = [(i**3) * left_coeff[0] + (i**2)*left_coeff[1] + i*left_coeff[2] + left_coeff[3] for i in left_x]
-            right_y = [(i**3) * right_coeff[0] + (i**2)*right_coeff[1] + i*right_coeff[2] + right_coeff[3] for i in right_x]
-
-            left_lane = [[i,j] for i,j in zip(left_x,left_y)]
-            right_lane = [[i,j] for i,j in zip(right_x,right_y)]
-
-            frame = cv2.resize(image,(256,256))
-            cv2.polylines(img1, np.int32([left_lane]), isClosed=False, color=(0,0,255),thickness=3)
-            cv2.polylines(img1, np.int32([right_lane]), isClosed=False, color=(0,0,255),thickness=3)'''
             cv2.imshow('image',img1)
             if save:
                 out.write(img1)
@@ -582,26 +468,7 @@ while cap.isOpened():
                 cv2.polylines(img1, np.int32([lane]), isClosed=False, color=(0,0,255),thickness=3)
             else:
                 cv2.polylines(img1, np.int32([lane]), isClosed=False, color=(255,0,0),thickness=3)
-            '''coeff = np.polyfit(final_x,final_y,2)
-            
-            coeff_inv = np.polyfit(final_y,final_x,2)
 
-            start_x = int(pos((start_y**5) * coeff_inv[0]  + (start_y**4)*coeff_inv[1] + (start_y**3) * coeff_inv[2]  + (start_y**2)*coeff_inv[3]+ start_y*coeff_inv[4] + coeff_inv[5]))
-            end_x = int(pos((end_y**5) * coeff_inv[0]  + (end_y**4)*coeff_inv[1] + (end_y**3) * coeff_inv[2]  + (end_y**2)*coeff_inv[3]+ end_y*coeff_inv[4] + coeff_inv[5]))
-            
-            x = np.linspace(start_x,end_x,50,endpoint=True,dtype=np.int32)
-            y = [(i**5) * coeff[0] + (i**4)*coeff[1] + (i**3) * coeff[2] + (i**2)*coeff[3] + i*coeff[4] + coeff[5] for i in x]
-            
-            start_x = int(pos((start_y**2) * coeff_inv[0]  + start_y*coeff_inv[1] + coeff_inv[2]))
-            end_x = int(pos((end_y**2) * coeff_inv[0]  + end_y*coeff_inv[1] + coeff_inv[2]))
-            
-            x = np.linspace(start_x,end_x,50,endpoint=True,dtype=np.int32)
-            y = [(i**2) * coeff[0] + i*coeff[1] + coeff[2] for i in x]
-            
-            lane = [[i,j] for i,j in zip(x,y)]
-
-            frame = cv2.resize(frame,(256,256))
-            cv2.polylines(img1, np.int32([lane]), isClosed=False, color=(0,0,255),thickness=3)'''
             cv2.imshow('image',img1)
             if save:
                 out.write(img1)            
